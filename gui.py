@@ -10,8 +10,8 @@ root.title('Tubes 2 AI')
 
 
 def open_source_image():
-    my_filetypes = [('png files', '.png'), ('jpeg files',
-                                            '.jpeg'), ('jpg files', '.jpg')]
+    my_filetypes = [('png files', '.png'), ('gif files',
+                                            '.gif')]
     answer = filedialog.askopenfilenames(parent=topframe,
                                          initialdir=os.getcwd(),
                                          title="Please select one or more files:",
@@ -29,6 +29,33 @@ def show_source_image():
         l1.image = img
         sourceimagecanvas.create_image(175, 150, image=l1.image)
 
+
+def show_rule_editor():
+    rule_editor = tk.Toplevel()
+    rule_editor.title('Rule Editor')
+    rule_editor.mainloop()
+
+
+def show_rules():
+    rules = tk.Toplevel()
+    rules.title('Rules')
+    rules.mainloop()
+
+
+def show_facts():
+    hit_rule = tk.Toplevel()
+    hit_rule.title('Facts')
+    hit_rule.mainloop()
+
+
+def OnDoubleClick(event):
+    item = tree.selection()[0]
+    path = os.getcwd() + '/assets/' + item + '.png'
+
+    img = tk.PhotoImage(file=path)
+    l1 = tk.Label(sourceimagecanvas, image=img)
+    l1.image = img
+    detectionimagecanvas.create_image(175, 150, image=l1.image)
 
 # ================================= Top frame ================================= #
 topframe = tk.Frame(root)
@@ -91,15 +118,15 @@ openimagebutton.grid(row=0, column=0, pady=4)
 
 # == 'Open Rule Editor' button ==
 openruleeditorbutton = tk.Button(
-    menubuttonframe, text='Open Rule Editor Button', width=20)
+    menubuttonframe, text='Open Rule Editor Button', width=20, command=show_rule_editor)
 openruleeditorbutton.grid(row=1, column=0, pady=4)
 
 # == 'Show Rules Editor' button ==
-showrulesbutton = tk.Button(menubuttonframe, text='Show Rules', width=20)
+showrulesbutton = tk.Button(menubuttonframe, text='Show Rules', width=20, command=show_rules)
 showrulesbutton.grid(row=2, column=0, pady=4)
 
 # == 'Show Facts Editor' button ==
-showfactsbutton = tk.Button(menubuttonframe, text='Show Facts', width=20)
+showfactsbutton = tk.Button(menubuttonframe, text='Show Facts', width=20, command=show_facts)
 showfactsbutton.grid(row=3, column=0, pady=4)
 
 # ==== 'Shape Menu' frame ====
@@ -116,7 +143,11 @@ shapecanvas = tk.Canvas(menushapeframe, height=150,
 shapecanvas.grid(row=4, column=0, pady=4)
 
 # == 'Shape Menu' tree ==
-tree = ttk.Treeview(shapecanvas, height=7)
+tree = ttk.Treeview(menushapeframe, height=7)
+tree.column('#0')
+tree.heading('#0', text='Shapes')
+tree.grid(row=4, column=0, pady=4)
+tree.bind("<Double-1>",OnDoubleClick)
 
 # All Shape, tree level 0
 allshape = tree.insert('', 0, 'allshape', text="All Shape")
@@ -124,7 +155,7 @@ allshape = tree.insert('', 0, 'allshape', text="All Shape")
 # Triangle, tree level 1
 triangle = tree.insert(allshape, 0, 'triangle', text='Triangle')
 acutetriangle = tree.insert(
-    triangle, 0, 'acutetriangle', text='Acute Triangle')
+    triangle, 0, 'acutetriangle', text='Acute Triangle', values=(show_source_image))
 obtusetriangle = tree.insert(
     triangle, 1, 'obtusetriangle', text='Obtuse Triangle')
 righttriangle = tree.insert(
