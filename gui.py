@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
+from PIL import Image
 import os
 
 root = tk.Tk()
@@ -24,7 +25,10 @@ def show_source_image():
     if path == '':
         pass
     else:
-        img = tk.PhotoImage(file=path)
+        im_temp = Image.open(path[0])
+        im_temp = im_temp.resize((350,300), Image.ANTIALIAS)
+        im_temp.save('resized_assets/SrcImg.png','png')
+        img = tk.PhotoImage(file='resized_assets/SrcImg.png')
         l1 = tk.Label(sourceimagecanvas, image=img)
         l1.image = img
         sourceimagecanvas.create_image(175, 150, image=l1.image)
@@ -52,8 +56,11 @@ def OnDoubleClick(event):
     item = tree.selection()[0]
     path = os.getcwd() + '/assets/' + item + '.png'
 
-    img = tk.PhotoImage(file=path)
-    l1 = tk.Label(sourceimagecanvas, image=img)
+    im_temp = Image.open(path)
+    im_temp = im_temp.resize((350,300), Image.ANTIALIAS)
+    im_temp.save('resized_assets/DetImg.png','png')
+    img = tk.PhotoImage(file='resized_assets/DetImg.png')
+    l1 = tk.Label(detectionimagecanvas, image=img)
     l1.image = img
     detectionimagecanvas.create_image(175, 150, image=l1.image)
 
@@ -155,23 +162,23 @@ allshape = tree.insert('', 0, 'allshape', text="All Shape")
 # Triangle, tree level 1
 triangle = tree.insert(allshape, 0, 'triangle', text='Triangle')
 acutetriangle = tree.insert(
-    triangle, 0, 'acutetriangle', text='Acute Triangle', values=(show_source_image))
+    triangle, 0, 'acute_triangle', text='Acute Triangle', values=(show_source_image))
 obtusetriangle = tree.insert(
-    triangle, 1, 'obtusetriangle', text='Obtuse Triangle')
+    triangle, 1, 'obtuse_triangle', text='Obtuse Triangle')
 righttriangle = tree.insert(
-    triangle, 2, 'righttriangle', text='Right Triangle')
+    triangle, 2, 'right_triangle', text='Right Triangle')
 isoscelestriangle = tree.insert(
     triangle, 3, 'isoscelestriangle', text='Isosceles Triangle')
 equilateraltriangle = tree.insert(
-    triangle, 4, 'equilateraltriangle', text='Equilateral Triangle')
+    triangle, 4, 'equilateral_triangle', text='Equilateral Triangle')
 
 # Isosceles triangle, tree level 2
 isoscelestriangle_right = tree.insert(
-    isoscelestriangle, 0, 'isoscelestriangle_right', text='Right Isosceles Triangle')
+    isoscelestriangle, 0, 'isosceles_right_triangle', text='Right Isosceles Triangle')
 isoscelestriangle_obtuse = tree.insert(
-    isoscelestriangle, 1, 'isoscelestriangle_obtuse', text='Obtuse Isosceles Triangle')
+    isoscelestriangle, 1, 'isosceles_obtuse_triangle', text='Obtuse Isosceles Triangle')
 isoscelestriangle_acute = tree.insert(
-    isoscelestriangle, 2, 'isoscelestriangle_acute', text='Acute Isosceles Triangle')
+    isoscelestriangle, 2, 'isosceles_acute_triangle', text='Acute Isosceles Triangle')
 
 # Quadrillateral, tree level 1
 quadrillateral = tree.insert(
@@ -180,13 +187,13 @@ paralellogram = tree.insert(quadrillateral, 0, text='Parallelogram')
 trapesium = tree.insert(quadrillateral, 1, text='Trapesium')
 
 # Parallelogram, tree level 2
-rectangle = tree.insert(paralellogram, 0, text='Rectangle')
-kite = tree.insert(paralellogram, 1, text='Kite')
+rectangle = tree.insert(paralellogram, 0, 'rectangle', text='Rectangle')
+kite = tree.insert(paralellogram, 1, 'kites', text='Kite')
 
 # Trapesium, tree level 2
-isoscelestrapesium = tree.insert(trapesium, 0, text='Isosceles Trapesium')
-rightsidedtrapesium = tree.insert(trapesium, 1, text='Right Sided Trapesium')
-leftsidedtrapesium = tree.insert(trapesium, 2, text='Left Sided Trapesium')
+isoscelestrapesium = tree.insert(trapesium, 0, 'trapesium',text='Isosceles Trapesium')
+rightsidedtrapesium = tree.insert(trapesium, 1, 'right_sided_trapesium', text='Right Sided Trapesium')
+leftsidedtrapesium = tree.insert(trapesium, 2, 'left_sided_trapesium', text='Left Sided Trapesium')
 
 # Pentagon, tree level 1
 pentagon = tree.insert(allshape, 2, 'pentagon', text='Pentagon')
