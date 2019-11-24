@@ -84,7 +84,6 @@
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
-    (eq (+ ?deg1 (+ ?deg2 ?deg3) 180 )
     (test (< ?deg1 89))
 	(test (< ?deg2 89))
 	(test (< ?deg3 89))
@@ -112,10 +111,10 @@
     (line ?id1 ?l1)
     (line ?id2 ?l2)
     (line ?id3 ?l3)
-    (== ?l1 ?l2 ?l3)
+    (eq ?l1 ?l2)
     =>
     (assert 
         (is_equilateral)
     )
-);
+)
 
