@@ -190,7 +190,7 @@
     )
     =>
     (assert (kite))
-)   
+);   
 
 (defrule trapezoid
     (quadrilateral)
