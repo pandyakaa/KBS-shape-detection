@@ -111,7 +111,11 @@
     (line ?id1 ?l1)
     (line ?id2 ?l2)
     (line ?id3 ?l3)
-    (eq ?l1 ?l2)
+    (test(neq ?id1 ?id2))
+	(test(neq ?id3 ?id2))
+	(test(neq ?id1 ?id3))
+    (test(eq ?l1 ?l2))
+    (test(eq ?l1 ?l3))
     =>
     (assert 
         (is_equilateral)

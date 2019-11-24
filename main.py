@@ -14,17 +14,17 @@ with open('shapes.clp', 'r') as file:
 for rule in rules :     
     env.build(rule)
 
+
 env.assert_string('(adjacent 3)')
-env.assert_string('(line 1 5)')
-env.assert_string('(line 2 5)')
-env.assert_string('(line 3 5)')
+env.assert_string('(line (integer 1) (integer 5) )')
+env.assert_string('(line (integer 2) (integer 5) )')
+env.assert_string('(line (integer 3) (integer 5) )')
+
 
 
 
 # Run
-for i in range(0,20):
-    print(env.run(100))
-    env.refresh()
+env.run(100)
 
 
 # Check facts
