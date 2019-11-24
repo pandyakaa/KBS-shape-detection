@@ -3,10 +3,15 @@ from tkinter import filedialog
 from tkinter import ttk
 from PIL import Image
 from transform import image2facts
+from inference import infer, rules
 import os
 
 root = tk.Tk()
 root.title('Tubes 2 AI')
+tags = []
+match = False
+result_string = ''
+rules_string = rules()
 
 # ================================= API ================================= #
 
@@ -22,6 +27,7 @@ def open_source_image():
 
 
 def show_source_image():
+    global match, result_string, text_detection, text_rule
     path = open_source_image()
     if path == '':
         pass
@@ -33,8 +39,21 @@ def show_source_image():
         l1 = tk.Label(sourceimagecanvas, image=img)
         l1.image = img
         sourceimagecanvas.create_image(175, 150, image=l1.image)
-        image2facts('resized_assets/SrcImg.png')
+        facts = image2facts('resized_assets/SrcImg.png')
+        result_string = infer(facts)
+        matchedfactscanvas.delete(text_rule)
+        text_rule = matchedfactscanvas.create_text(150, 150, text=result_string)
 
+        for tag in tags:
+            if tag not in result_string:
+                detectionresultcanvas.delete(text_detection)
+                text_detection = detectionresultcanvas.create_text(150, 150, text='No Match :(')
+                match = False
+                break
+        else:
+            detectionresultcanvas.delete(text_detection)
+            text_detection = detectionresultcanvas.create_text(150, 150, text='Match')
+            match = True
 
 def show_rule_editor():
     rule_editor = tk.Toplevel()
@@ -43,8 +62,21 @@ def show_rule_editor():
 
 
 def show_rules():
+    global rules_string
     rules = tk.Toplevel()
     rules.title('Rules')
+    rules_frame = tk.Frame(rules)
+    rules_frame.grid(row=0, column=0)
+
+    
+    rules_label = tk.Label(rules_frame, text='Rules')
+    rules_label.grid(pady=5)
+
+    rules_canvas = tk.Canvas(
+        rules_frame, width=500, height=1000, background='white')
+    rules_canvas.grid(padx=5, pady=5)
+
+    rules_canvas.create_text(400,250,text=rules_string)
     rules.mainloop()
 
 
@@ -55,7 +87,9 @@ def show_facts():
 
 
 def OnDoubleClick(event):
+    global tags
     item = tree.selection()[0]
+    tags = item.split('-')
     path = os.getcwd() + '/assets/' + item + '.png'
 
     im_temp = Image.open(path)
@@ -162,54 +196,54 @@ tree.bind("<Double-1>",OnDoubleClick)
 allshape = tree.insert('', 0, 'allshape', text="All Shape")
 
 # Triangle, tree level 1
-triangle = tree.insert(allshape, 0, 'triangle', text='Triangle')
+triangle = tree.insert(allshape, 0, 'root-triangle', text='Triangle')
 acutetriangle = tree.insert(
-    triangle, 0, 'acute_triangle', text='Acute Triangle', values=(show_source_image))
+    triangle, 0, 'triangle-is_acute', text='Acute Triangle', values=(show_source_image))
 obtusetriangle = tree.insert(
-    triangle, 1, 'obtuse_triangle', text='Obtuse Triangle')
+    triangle, 1, 'triangle-is_obtuse', text='Obtuse Triangle')
 righttriangle = tree.insert(
-    triangle, 2, 'right_triangle', text='Right Triangle')
+    triangle, 2, 'triangle', text='Right Triangle')
 isoscelestriangle = tree.insert(
-    triangle, 3, 'isoscelestriangle', text='Isosceles Triangle')
+    triangle, 3, 'triangle-is_isosceles', text='Isosceles Triangle')
 equilateraltriangle = tree.insert(
-    triangle, 4, 'equilateral_triangle', text='Equilateral Triangle')
+    triangle, 4, 'triangle-is_equilateral', text='Equilateral Triangle')
 
 # Isosceles triangle, tree level 2
 isoscelestriangle_right = tree.insert(
-    isoscelestriangle, 0, 'isosceles_right_triangle', text='Right Isosceles Triangle')
+    isoscelestriangle, 0, 'triangle-is_isosceles-is_right', text='Right Isosceles Triangle')
 isoscelestriangle_obtuse = tree.insert(
-    isoscelestriangle, 1, 'isosceles_obtuse_triangle', text='Obtuse Isosceles Triangle')
+    isoscelestriangle, 1, 'triangle-is_obtuse-is_isosceles', text='Obtuse Isosceles Triangle')
 isoscelestriangle_acute = tree.insert(
-    isoscelestriangle, 2, 'isosceles_acute_triangle', text='Acute Isosceles Triangle')
+    isoscelestriangle, 2, 'triangle-is_acute-is_isosceles', text='Acute Isosceles Triangle')
 
 # Quadrillateral, tree level 1
 quadrillateral = tree.insert(
-    allshape, 1, 'quadrillateral', text='Quadrillateral')
+    allshape, 1, 'quadrilateral', text='Quadrillateral')
 paralellogram = tree.insert(quadrillateral, 0, text='Parallelogram')
 trapesium = tree.insert(quadrillateral, 1, text='Trapesium')
 
 # Parallelogram, tree level 2
-rectangle = tree.insert(paralellogram, 0, 'rectangle', text='Rectangle')
-kite = tree.insert(paralellogram, 1, 'kites', text='Kite')
+rectangle = tree.insert(paralellogram, 0, 'quadrilateral-is_square', text='Rectangle')
+kite = tree.insert(paralellogram, 1, 'quadrilateral-is_kite', text='Kite')
 
 # Trapesium, tree level 2
-isoscelestrapesium = tree.insert(trapesium, 0, 'trapesium',text='Isosceles Trapesium')
-rightsidedtrapesium = tree.insert(trapesium, 1, 'right_sided_trapesium', text='Right Sided Trapesium')
-leftsidedtrapesium = tree.insert(trapesium, 2, 'left_sided_trapesium', text='Left Sided Trapesium')
+isoscelestrapesium = tree.insert(trapesium, 0, 'quadrilateral-trapezoid',text='Isosceles Trapesium')
+rightsidedtrapesium = tree.insert(trapesium, 1, 'quadrilateral-trapezoid_right_side', text='Right Sided Trapesium')
+leftsidedtrapesium = tree.insert(trapesium, 2, 'quadrilateral-trapezoid_left_side', text='Left Sided Trapesium')
 
 # Pentagon, tree level 1
-pentagon = tree.insert(allshape, 2, 'pentagon', text='Pentagon')
+pentagon = tree.insert(allshape, 2, 'root-pentagon', text='Pentagon')
 
 # Pentagon Five Sided, tree level 2
 pentagon_five_sided = tree.insert(
-    pentagon, 0, 'pentagon_five_sided', text='Pentagon Five Sided')
+    pentagon, 0, 'pentagon', text='Pentagon Five Sided')
 
 # Hexagon, tree level 1
-hexagon = tree.insert(allshape, 3, 'hexagon', text='Hexagon')
+hexagon = tree.insert(allshape, 3, 'root-hexagon', text='Hexagon')
 
 # Hexagon Six Sided, tree level 2
 hexagon_six_sided = tree.insert(
-    hexagon, 0, 'hexagon_six_sided', text='Hexagon Six Sided')
+    hexagon, 0, 'hexagon', text='Hexagon Six Sided')
 
 tree.grid()
 
@@ -231,6 +265,7 @@ detectionresultlabel.grid(pady=5)
 detectionresultcanvas = tk.Canvas(
     detectionresultframe, width=300, height=300, background='white')
 detectionresultcanvas.grid(padx=5, pady=5)
+text_detection = detectionresultcanvas.create_text(150, 150, text='No Match')
 
 # ================= BottomMid frame ================= #
 
@@ -246,6 +281,7 @@ matchedfactslabel.grid(pady=5)
 matchedfactscanvas = tk.Canvas(
     matchedfactsframe, width=300, height=300, background='white')
 matchedfactscanvas.grid(padx=5, pady=5)
+text_rule = matchedfactscanvas.create_text(150,150,text='Choose two image to see facts')
 
 # ================= BottomRight frame ================= #
 

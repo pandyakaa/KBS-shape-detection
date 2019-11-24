@@ -52,7 +52,7 @@ def adjacentLine(line1, line2):
     min_pos = np.argmin(d)
 
     if (d[min_pos] < THRESHOLD):
-        return points[min_pos][:2]
+        return [points[min_pos][0], points[min_pos][2]]
     else:
         return []
 
@@ -91,8 +91,8 @@ def image2facts(image_path):
 
             point = adjacentLine(line1, line2)
 
-            if (len(point) > 0 and (frozenset((tuple_line1, tuple_line2)) not in adjacent_lines)):
-                adjacent_lines.append(frozenset((tuple_line1, tuple_line2)))
+            if (len(point) > 0 and (set((tuple_line1, tuple_line2)) not in adjacent_lines)):
+                adjacent_lines.append(set((tuple_line1, tuple_line2)))
                 points.append(point)
 
     pprint(m)
@@ -100,9 +100,9 @@ def image2facts(image_path):
     pprint(adjacent_lines)
     pprint(points)
 
-    cv2.imshow("Image", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("Image", img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     return m, lines, adjacent_lines, points
 

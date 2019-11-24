@@ -26,6 +26,31 @@
     (assert (hexagon))
 );
 
+(defrule line_from_points_3
+    (triangle)
+    (point ?x1 ?y1)
+    (point ?x2 ?y2)
+    (point ?x3 ?y3)
+    =>
+    (assert (line 1 (sqrt(+(*(- ?x2 ?x1)(- ?x2 ?x1))(*(- ?y2 ?y1)(- ?y2 ?y1))))))
+    (assert (line 2 (sqrt(+(*(- ?x3 ?x1)(- ?x3 ?x1))(*(- ?y3 ?y1)(- ?y3 ?y1))))))
+    (assert (line 3 (sqrt(+(*(- ?x2 ?x3)(- ?x2 ?x3))(*(- ?y2 ?y3)(- ?y2 ?y3))))))
+);
+
+(defrule line_from_points_4
+    (triangle)
+    (point ?x1 ?y1)
+    (point ?x2 ?y2)
+    (point ?x3 ?y3)
+    (point ?x4 ?y4)
+    =>
+    (assert (line 1 (sqrt(+(*(- ?x2 ?x1)(- ?x2 ?x1))(*(- ?y2 ?y1)(- ?y2 ?y1))))))
+    (assert (line 2 (sqrt(+(*(- ?x3 ?x2)(- ?x3 ?x2))(*(- ?y3 ?y2)(- ?y3 ?y2))))))
+    (assert (line 3 (sqrt(+(*(- ?x3 ?x4)(- ?x4 ?x3))(*(- ?y4 ?y3)(- ?y4 ?y3))))))
+    (assert (line 3 (sqrt(+(*(- ?x1 ?x4)(- ?x4 ?x1))(*(- ?y4 ?y1)(- ?y4 ?y1))))))
+
+);
+
 (defrule get_3_angle
     (triangle)
     (line ?id1 ?l1 ?m1)
