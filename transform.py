@@ -3,6 +3,9 @@ import numpy as np
 import math
 import logging
 import sys
+from pprint import pprint
+
+# TODO: Right sided triangle and obtuse triangle
 
 THRESHOLD = 25
 
@@ -72,9 +75,9 @@ for i in range(len(lines)):
         if (adjacentLine(line1, line2) and (frozenset((tuple_line1, tuple_line2)) not in adjacent_lines)):
             adjacent_lines.append(frozenset((tuple_line1, tuple_line2)))
 
-print(m)
-print(lines)
-print(adjacent_lines)
+pprint(m)
+pprint(lines)
+pprint(adjacent_lines)
 
 cv2.imshow("Image", img)
 cv2.waitKey(0)
