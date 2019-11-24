@@ -1,5 +1,6 @@
 (deffunction get_angle (?m1 ?m2) 
     (rad-deg (atan ( abs ( / (- ?m2 ?m1) (+ 1 (* ?m1 ?m2)) ) ) ) )
+)
 
 (defrule check_triangle
     (adjacent 3)   
