@@ -90,7 +90,7 @@
    (line ?id1 ?l1)
    (line ?id2 ?l2)
    (line ?id3 ?l3)
-   (eq ?l1 ?l2)
+   (eq ?l1 ?l2 ?l3)
    =>
    (assert (is_equilateral)))
 
