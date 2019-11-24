@@ -1,6 +1,6 @@
 (deffunction get_angle (?m1 ?m2) 
     (rad-deg (atan ( abs ( / (- ?m2 ?m1) (+ 1 (* ?m1 ?m2)) ) ) ) )
-)
+);
 
 (defrule check_triangle
     (adjacent 3)   
@@ -154,6 +154,44 @@
     )
 );
 
+(defrule is_kite 
+    (quadrilateral)
+    (point ?x1 ?y1)
+    (point ?x2 ?y2)
+    (point ?x3 ?y3)
+    (point ?x4 ?y4)
+    (line ?id1 ?l1)
+    (line ?id2 ?l2)
+    (line ?id3 ?l3)
+    (line ?id4 ?l4)
+    (test(neq ?id1 ?id2))
+    (test(neq ?id3 ?id2))
+    (test(neq ?id4 ?id2))
+    (test(neq ?id1 ?id3))
+    (test(neq ?id1 ?id4))
+    (test(neq ?id3 ?id4))
+    (meet ?id1 ?id2)
+    (meet ?id1 ?id4)
+    (meet ?id2 ?id3)
+    (meet ?id4 ?id3) 
+    (test 
+        (and 
+            (eq ?id1 ?id4)
+            (eq ?id2 ?id3)
+            (neq ?id1 ?id2)
+            (neq ?id1 ?id3)
+        )
+    )
+    (test
+        (and  
+            (eq ?x1 ?x3)
+            (eq ?y2 ?y4)
+        )
+    )
+    =>
+    (assert (kite))
+)   
+
 (defrule trapezoid
     (quadrilateral)
     (line ?id1 ?l1)
@@ -175,7 +213,7 @@
     =>
     (assert(trapezoid))
     (assert(is_isosceles))
-)
+);
 
 (defrule trapezoid_left_side
     (quadrilateral)
@@ -210,7 +248,7 @@
     =>
     (assert (trapezoid))
     (assert (left-side-right))
-)
+);
 
 (defrule trapezoid_right_side
     (quadrilateral)
@@ -245,7 +283,7 @@
     =>
     (assert (trapezoid))
     (assert (right-side-right))
-)
+);
 
 
 
