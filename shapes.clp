@@ -1,3 +1,6 @@
+(deffunction get_angle (?m1 ?m2) 
+    (rad-deg (atan ( abs ( / (- ?m2 ?m1) (+ 1 (* ?m1 ?m2)) ) ) ) )
+
 (defrule check_triangle
     (adjacent 3)   
      =>
@@ -49,9 +52,9 @@
 
 (defrule get_3_angle
     (triangle)
-    (line ?id1 ?l1)
-    (line ?id2 ?l2)
-    (line ?id3 ?l3) 
+    (line ?id1 ?l1 ?m1)
+    (line ?id2 ?l2 ?m2)
+    (line ?id3 ?l3 ?m3) 
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
@@ -63,9 +66,9 @@
 
 (defrule is_isosceles
     (triangle)
-    (line ?id1 ?l1)
-    (line ?id2 ?l2)
-    (line ?id3 ?l3)
+    (line ?id1 ?l1 ?m1)
+    (line ?id2 ?l2 ?m2)
+    (line ?id3 ?l3 ?m3)
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
@@ -116,8 +119,8 @@
 );
 (defrule is_equilateral
     (triangle)
-    (line ?id1 ?l1)
-    (line ?id2 ?l2)
+    (line ?id1 ?l1 ?m1)
+    (line ?id2 ?l2 ?m2)
     (line ?id3 ?l3)
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
@@ -131,10 +134,10 @@
 );
 (defrule is_square
     (quadrilateral)
-    (line ?id1 ?l1)
-    (line ?id2 ?l2)
-    (line ?id3 ?l3)
-    (line ?id4 ?l4)
+    (line ?id1 ?l1 ?m1)
+    (line ?id2 ?l2 ?m2)
+    (line ?id3 ?l3 ?m3)
+    (line ?id4 ?l4 ?m4)
     (test(neq ?id1 ?id2))
     (test(neq ?id3 ?id2))
     (test(neq ?id4 ?id2))
@@ -149,6 +152,102 @@
         (is_square)
     )
 );
+
+(defrule trapezoid
+    (quadrilateral)
+    (line ?id1 ?l1)
+    (line ?id2 ?l2)
+    (line ?id3 ?l3)
+    (line ?id4 ?l4)
+    (test(neq ?id1 ?id2))
+    (test(neq ?id3 ?id2))
+    (test(neq ?id4 ?id2))
+    (test(neq ?id1 ?id3))
+    (test(neq ?id1 ?id4))
+    (test(neq ?id3 ?id4))
+    (meet ?id1 ?id2)
+    (meet ?id1 ?id4)
+    (meet ?id2 ?id3)
+    (meet ?id4 ?id3) 
+    (test(= ?l2 ?l4))
+    (test(<> ?l3 ?l1))
+    =>
+    (assert(trapezoid))
+    (assert(is_isosceles))
+)
+
+(defrule trapezoid_left_side
+    (quadrilateral)
+    (line ?id1 ?l1 ?m1)
+    (line ?id2 ?l2 ?m2)
+    (line ?id3 ?l3 ?m3)
+    (line ?id4 ?l4 ?m4)
+    (test(neq ?id1 ?id2))
+    (test(neq ?id3 ?id2))
+    (test(neq ?id4 ?id2))
+    (test(neq ?id1 ?id3))
+    (test(neq ?id1 ?id4))
+    (test(neq ?id3 ?id4))
+    (meet ?id1 ?id2)
+    (meet ?id1 ?id4)
+    (meet ?id2 ?id3)
+    (meet ?id4 ?id3) 
+
+    (test 
+        (and
+            (or  
+                ( > (get_angle ?m1 ?m4) 89) 
+                ( < (get_angle ?m1 ?m4) 91) 
+            )
+            (or  
+                ( > (get_angle ?m4 ?m3) 89) 
+                ( < (get_angle ?m4 ?m3) 91) 
+            ) 
+        ) 
+    )
+    (test ( < ?m2 0))
+    =>
+    (assert (trapezoid))
+    (assert (left-side-right))
+)
+
+(defrule trapezoid_right_side
+    (quadrilateral)
+    (line ?id1 ?l1 ?m1)
+    (line ?id2 ?l2 ?m2)
+    (line ?id3 ?l3 ?m3)
+    (line ?id4 ?l4 ?m4)
+    (test(neq ?id1 ?id2))
+    (test(neq ?id3 ?id2))
+    (test(neq ?id4 ?id2))
+    (test(neq ?id1 ?id3))
+    (test(neq ?id1 ?id4))
+    (test(neq ?id3 ?id4))
+    (meet ?id1 ?id2)
+    (meet ?id1 ?id4)
+    (meet ?id2 ?id3)
+    (meet ?id4 ?id3) 
+
+    (test 
+        (and
+            (or  
+                ( > (get_angle ?m1 ?m4) 89) 
+                ( < (get_angle ?m1 ?m4) 91) 
+            )
+            (or  
+                ( > (get_angle ?m4 ?m3) 89) 
+                ( < (get_angle ?m4 ?m3) 91) 
+            ) 
+        ) 
+    )
+    (test ( > ?m2 0))
+    =>
+    (assert (trapezoid))
+    (assert (right-side-right))
+)
+
+
+
 (defrule is_equilateral
 (pentagon)
 (line ?id1 ?l1)
