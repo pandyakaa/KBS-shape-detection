@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 from PIL import Image
+from transform import image2facts
 import os
 
 root = tk.Tk()
@@ -32,6 +33,7 @@ def show_source_image():
         l1 = tk.Label(sourceimagecanvas, image=img)
         l1.image = img
         sourceimagecanvas.create_image(175, 150, image=l1.image)
+        image2facts('resized_assets/SrcImg.png')
 
 
 def show_rule_editor():
@@ -125,7 +127,7 @@ openimagebutton.grid(row=0, column=0, pady=4)
 
 # == 'Open Rule Editor' button ==
 openruleeditorbutton = tk.Button(
-    menubuttonframe, text='Open Rule Editor Button', width=20, command=show_rule_editor)
+    menubuttonframe, text='Open Rule Editor', width=20, command=show_rule_editor)
 openruleeditorbutton.grid(row=1, column=0, pady=4)
 
 # == 'Show Rules Editor' button ==

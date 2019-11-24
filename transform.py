@@ -7,7 +7,7 @@ from pprint import pprint
 
 # TODO: Right sided triangle and obtuse triangle
 
-THRESHOLD = 25
+THRESHOLD = 50
 
 
 def euclidDistance(x1, x2, y1, y2):
@@ -100,11 +100,13 @@ def image2facts(image_path):
     pprint(adjacent_lines)
     pprint(points)
 
+    cv2.imshow("Image", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
     return m, lines, adjacent_lines, points
 
-    # cv2.imshow("Image", img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+
 
 
 if __name__ == "__main__":
