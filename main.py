@@ -11,7 +11,7 @@ with open('shapes.clp', 'r') as file:
     rules = string.split(';')
     print(len(rules))
 
-for rule in rules :     
+for rule in rules:
     env.build(rule)
 
 
@@ -22,8 +22,6 @@ env.assert_string('(line (integer 3) (integer 5) )')
 env.assert_string('(line (integer 4) (integer 5) )')
 env.assert_string('(line (integer 5) (integer 5) )')
 env.assert_string('(line (integer 6) (integer 5) )')
-
-
 
 
 # Run
