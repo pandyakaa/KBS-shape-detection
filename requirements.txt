@@ -81,7 +81,7 @@ PySastrawi==1.2.0
 PySocks==1.6.8
 python-dateutil==2.7.5
 python-decouple==3.1
-python-engineio==3.5.1
+python-engineio==3.8.2.post1
 python-socketio==3.1.2
 pytz==2019.1
 pywin32==224
