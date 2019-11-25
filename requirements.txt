@@ -51,7 +51,7 @@ mccabe==0.6.1
 mock==3.0.3
 murmurhash==1.0.2
 mysql-connector-python==8.0.16
-nltk==3.4
+nltk==3.4.5
 numpy==1.16.2
 oauthlib==3.0.1
 opencv-python==4.1.1.26
