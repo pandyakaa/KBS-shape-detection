@@ -48,10 +48,7 @@
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
-    (and
-        test(< (- ?l1 ?l2) 10)
-        test(> (- ?l1 ?l2) -10)
-    )
+    (test(< (abs(- ?l1 ?l2)) 10))
     =>
     (assert
         (is_isosceles)
@@ -98,14 +95,8 @@
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
-    (and
-        test(< (- ?l1 ?l2) 10)
-        test(> (- ?l1 ?l2) -10)
-    )
-    (and
-        test(< (- ?l2 ?l3) 10)
-        test(> (- ?l2 ?l3) -10)
-    )
+    (test(< (abs(- ?l1 ?l2)) 10))
+    (test(< (abs(- ?l2 ?l3)) 10))
     =>
     (assert 
         (is_equilateral)
