@@ -48,12 +48,9 @@
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
-    (test
-        (or 
-            (and (eq ?l1 ?l2)(neq ?l1 ?l3) )
-            (and (eq ?l1 ?l3)(neq ?l1 ?l2) )
-            (and (eq ?l2 ?l3)(neq ?l1 ?l3) )
-        )
+    (and
+        test(< (- ?l1 ?l2) 10)
+        test(> (- ?l1 ?l2) -10)
     )
     =>
     (assert
@@ -70,9 +67,9 @@
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
     (and
-        (test (< ?deg1 89))
-        (test (< ?deg2 89))
-        (test (< ?deg3 89))
+        (test (< ?deg1 87))
+        (test (< ?deg2 87))
+        (test (< ?deg3 87))
     )
     =>
     (assert (is_acute))
@@ -86,9 +83,9 @@
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
     (or
-        (test( > ?deg1 91))
-        (test( > ?deg2 91))
-        (test( > ?deg3 91))
+        (test( > ?deg1 93))
+        (test( > ?deg2 93))
+        (test( > ?deg3 93))
     )
     =>
     (assert(is_obtuse))
@@ -97,17 +94,40 @@
     (triangle)
     (line ?id1 ?l1 ?m1)
     (line ?id2 ?l2 ?m2)
-    (line ?id3 ?l3)
+    (line ?id3 ?l3 ?m3)
     (test(neq ?id1 ?id2))
 	(test(neq ?id3 ?id2))
 	(test(neq ?id1 ?id3))
-    (test(eq ?l1 ?l2))
-    (test(eq ?l1 ?l3))
+    (and
+        test(< (- ?l1 ?l2) 10)
+        test(> (- ?l1 ?l2) -10)
+    )
+    (and
+        test(< (- ?l2 ?l3) 10)
+        test(> (- ?l2 ?l3) -10)
+    )
     =>
     (assert 
         (is_equilateral)
     )
 );
+
+(defrule is_right
+    (triangle)
+    (angle ?id1 ?deg1)
+    (angle ?id2 ?deg2)
+    (angle ?id3 ?deg3)
+    (test(neq ?id1 ?id2))
+	(test(neq ?id3 ?id2))
+	(test(neq ?id1 ?id3))
+    (and
+        (test( < ?deg1 93))
+        (test( > ?deg1 87))
+    )
+    =>
+    (assert(is_right))
+);
+
 (defrule is_square
     (quadrilateral)
     (line ?id1 ?l1 ?m1)
