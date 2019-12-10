@@ -103,8 +103,6 @@
     )
 );
 
-<<<<<<< HEAD
-=======
 (defrule is_right
     (triangle)
     (angle ?id1 ?deg1)
@@ -121,7 +119,6 @@
     (assert(is_right))
 );
 
->>>>>>> de14cdedacb697389ec7c94bba2e44a5a32769a6
 (defrule is_square
     (quadrilateral)
     (line ?id1 ?l1 ?m1)
