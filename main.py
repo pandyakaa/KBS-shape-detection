@@ -33,8 +33,8 @@ def show_source_image():
         pass
     else:
         im_temp = Image.open(path[0])
-        im_temp = im_temp.resize((350,300), Image.ANTIALIAS)
-        im_temp.save('resized_assets/SrcImg.png','png')
+        im_temp = im_temp.resize((350, 300), Image.ANTIALIAS)
+        im_temp.save('resized_assets/SrcImg.png', 'png')
         img = tk.PhotoImage(file='resized_assets/SrcImg.png')
         l1 = tk.Label(sourceimagecanvas, image=img)
         l1.image = img
@@ -42,18 +42,22 @@ def show_source_image():
         facts = image2facts('resized_assets/SrcImg.png')
         result_string = infer(facts)
         matchedfactscanvas.delete(text_rule)
-        text_rule = matchedfactscanvas.create_text(150, 150, text=result_string)
+        text_rule = matchedfactscanvas.create_text(
+            150, 150, text=result_string)
 
         for tag in tags:
             if tag not in result_string:
                 detectionresultcanvas.delete(text_detection)
-                text_detection = detectionresultcanvas.create_text(150, 150, text='No Match :(')
+                text_detection = detectionresultcanvas.create_text(
+                    150, 150, text='No Match :(')
                 match = False
                 break
         else:
             detectionresultcanvas.delete(text_detection)
-            text_detection = detectionresultcanvas.create_text(150, 150, text='Match')
+            text_detection = detectionresultcanvas.create_text(
+                150, 150, text='Match')
             match = True
+
 
 def show_rule_editor():
     rule_editor = tk.Toplevel()
@@ -65,18 +69,18 @@ def show_rules():
     global rules_string
     rules = tk.Toplevel()
     rules.title('Rules')
-    rules_frame = tk.Frame(rules)
-    rules_frame.grid(row=0, column=0)
+    rules_scrollbar = tk.Scrollbar(rules)
+    rules_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-    
-    rules_label = tk.Label(rules_frame, text='Rules')
-    rules_label.grid(pady=5)
+    mylist = tk.Listbox(
+        rules, yscrollcommand=rules_scrollbar.set, height=200, width=200)
+    print(rules_string)
+    for line in rules_string.split('\n'):
+        mylist.insert(tk.END, line)
 
-    rules_canvas = tk.Canvas(
-        rules_frame, width=500, height=1000, background='white')
-    rules_canvas.grid(padx=5, pady=5)
+    mylist.pack(side=tk.LEFT, fill=tk.BOTH)
+    rules_scrollbar.config(command=mylist.yview)
 
-    rules_canvas.create_text(400,250,text=rules_string)
     rules.mainloop()
 
 
@@ -93,12 +97,13 @@ def OnDoubleClick(event):
     path = os.getcwd() + '/assets/' + item + '.png'
 
     im_temp = Image.open(path)
-    im_temp = im_temp.resize((350,300), Image.ANTIALIAS)
-    im_temp.save('resized_assets/DetImg.png','png')
+    im_temp = im_temp.resize((350, 300), Image.ANTIALIAS)
+    im_temp.save('resized_assets/DetImg.png', 'png')
     img = tk.PhotoImage(file='resized_assets/DetImg.png')
     l1 = tk.Label(detectionimagecanvas, image=img)
     l1.image = img
     detectionimagecanvas.create_image(175, 150, image=l1.image)
+
 
 # ================================= Top frame ================================= #
 topframe = tk.Frame(root)
@@ -165,11 +170,13 @@ openruleeditorbutton = tk.Button(
 openruleeditorbutton.grid(row=1, column=0, pady=4)
 
 # == 'Show Rules Editor' button ==
-showrulesbutton = tk.Button(menubuttonframe, text='Show Rules', width=20, command=show_rules)
+showrulesbutton = tk.Button(
+    menubuttonframe, text='Show Rules', width=20, command=show_rules)
 showrulesbutton.grid(row=2, column=0, pady=4)
 
 # == 'Show Facts Editor' button ==
-showfactsbutton = tk.Button(menubuttonframe, text='Show Facts', width=20, command=show_facts)
+showfactsbutton = tk.Button(
+    menubuttonframe, text='Show Facts', width=20, command=show_facts)
 showfactsbutton.grid(row=3, column=0, pady=4)
 
 # ==== 'Shape Menu' frame ====
@@ -190,7 +197,7 @@ tree = ttk.Treeview(menushapeframe, height=7)
 tree.column('#0')
 tree.heading('#0', text='Shapes')
 tree.grid(row=4, column=0, pady=4)
-tree.bind("<Double-1>",OnDoubleClick)
+tree.bind("<Double-1>", OnDoubleClick)
 
 # All Shape, tree level 0
 allshape = tree.insert('', 0, 'allshape', text="All Shape")
@@ -223,13 +230,17 @@ paralellogram = tree.insert(quadrillateral, 0, text='Parallelogram')
 trapesium = tree.insert(quadrillateral, 1, text='Trapesium')
 
 # Parallelogram, tree level 2
-rectangle = tree.insert(paralellogram, 0, 'quadrilateral-is_square', text='Rectangle')
+rectangle = tree.insert(
+    paralellogram, 0, 'quadrilateral-is_square', text='Rectangle')
 kite = tree.insert(paralellogram, 1, 'quadrilateral-is_kite', text='Kite')
 
 # Trapesium, tree level 2
-isoscelestrapesium = tree.insert(trapesium, 0, 'quadrilateral-trapezoid',text='Isosceles Trapesium')
-rightsidedtrapesium = tree.insert(trapesium, 1, 'quadrilateral-trapezoid_right_side', text='Right Sided Trapesium')
-leftsidedtrapesium = tree.insert(trapesium, 2, 'quadrilateral-trapezoid_left_side', text='Left Sided Trapesium')
+isoscelestrapesium = tree.insert(
+    trapesium, 0, 'quadrilateral-trapezoid', text='Isosceles Trapesium')
+rightsidedtrapesium = tree.insert(
+    trapesium, 1, 'quadrilateral-trapezoid_right_side', text='Right Sided Trapesium')
+leftsidedtrapesium = tree.insert(
+    trapesium, 2, 'quadrilateral-trapezoid_left_side', text='Left Sided Trapesium')
 
 # Pentagon, tree level 1
 pentagon = tree.insert(allshape, 2, 'root-pentagon', text='Pentagon')
@@ -281,7 +292,8 @@ matchedfactslabel.grid(pady=5)
 matchedfactscanvas = tk.Canvas(
     matchedfactsframe, width=300, height=300, background='white')
 matchedfactscanvas.grid(padx=5, pady=5)
-text_rule = matchedfactscanvas.create_text(150,150,text='Choose two image to see facts')
+text_rule = matchedfactscanvas.create_text(
+    150, 150, text='Choose two image to see facts')
 
 # ================= BottomRight frame ================= #
 
