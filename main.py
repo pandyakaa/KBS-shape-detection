@@ -85,8 +85,20 @@ def show_rules():
 
 
 def show_facts():
+    global result_string
     hit_rule = tk.Toplevel()
     hit_rule.title('Facts')
+    facts_scrollbar = tk.Scrollbar(hit_rule)
+    facts_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    mylist = tk.Listbox(
+        hit_rule, yscrollcommand=facts_scrollbar.set, height=200, width=200)
+    for line in result_string.split('\n'):
+        mylist.insert(tk.END, line)
+
+    mylist.pack(side=tk.LEFT, fill=tk.BOTH)
+    facts_scrollbar.config(command=mylist.yview)
+
     hit_rule.mainloop()
 
 
